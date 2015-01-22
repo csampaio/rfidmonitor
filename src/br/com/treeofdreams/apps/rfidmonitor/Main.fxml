@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.treeofdreams.apps.rfidmonitor.MainController">
+   <left>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="connectBtn" mnemonicParsing="false" onAction="#OnConnectClick" text="%connect" />
+            <Button fx:id="readBtn" mnemonicParsing="false" onAction="#OnReadClick" text="%start_read" />
+         </children>
+      </VBox>
+   </left>
+   <center>
+      <VBox alignment="BOTTOM_LEFT" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <ListView fx:id="outputList" prefHeight="351.0" prefWidth="500.0" VBox.vgrow="ALWAYS" />
+            <AnchorPane maxHeight="83.0" prefHeight="83.0" prefWidth="500.0">
+               <children>
+                  <TextField fx:id="readerIP" layoutY="14.0" promptText="IP do Leitor" />
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

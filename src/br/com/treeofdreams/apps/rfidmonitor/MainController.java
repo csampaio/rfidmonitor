@@ -37,7 +37,7 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.rb = rb;
-        readerIP.setText("192.168.0.22");
+        readerIP.setText("10.0.0.25");
         outputList.setItems(tagsList);
         rfidMonitor.setOutput(tagsList);
     }

@@ -189,12 +189,77 @@ public class RFIDReader implements LLRPEndpoint, IRFIDReader {
             for (TagReportData tag : tags) {
                 System.out.println(tag.getEPCParameter());
                 System.out.println(tag.getLastSeenTimestampUTC());
+                logOneTagReport(tag);
                 if (listner != null) {
                     String txt = tag.getEPCParameter() + " time:" + tag.getLastSeenTimestampUTC().toString();
                     listner.OnTagWasRead(txt);
                 }
             }
         }
+    }
+
+    private void logOneTagReport(TagReportData tr) {
+        // As an example here, we’ll just get the stuff out of here and
+        // for a super long string
+        LLRPParameter epcp = (LLRPParameter) tr.getEPCParameter();
+        // epc is not optional, so we should fail if we can’t find it
+        String epcString = "unknownEPC";
+        if (epcp != null) {
+            if (epcp.getName().equals("EPC_96")) {
+                EPC_96 epc96 = (EPC_96) epcp;
+                epcString = epc96.getEPC().toString();
+            } else if (epcp.getName().equals("EPCData")) {
+                EPCData epcData = (EPCData) epcp;
+                epcString = epcData.getEPC().toString();
+            }
+        } else {
+            System.out.println("Could not find EPC in Tag Report");
+            System.exit(1);
+        }
+        // all of these values are optional, so check their non-nullness first
+        String antenna = "unknownAntenna";
+        if (tr.getAntennaID() != null) {
+            antenna = tr.getAntennaID().getAntennaID().toString();
+        }
+        String index = "unknownChannelIndex";
+        if (tr.getChannelIndex() != null) {
+            index = tr.getChannelIndex().getChannelIndex().toString();
+        }
+        String ftime = "unknownFirstTimestamp";
+        if (tr.getFirstSeenTimestampUTC() != null) {
+            ftime = tr.getFirstSeenTimestampUTC().getMicroseconds().toString();
+        }
+        String paramId = "unknownParamSpecID";
+        if (tr.getInventoryParameterSpecID() != null) {
+            paramId = tr.getInventoryParameterSpecID().getInventoryParameterSpecID().toString();
+        }
+
+        String ltime = "unknownLastTimestamp";
+        if (tr.getLastSeenTimestampUTC() != null) {
+            ltime = tr.getLastSeenTimestampUTC().getMicroseconds().toString();
+        }
+        String rssi = "unknownRssi";
+        if (tr.getPeakRSSI() != null) {
+            rssi = tr.getPeakRSSI().getPeakRSSI().toString();
+        }
+        String roid = "unknownRospecID";
+        if (tr.getROSpecID() != null) {
+            roid = tr.getROSpecID().getROSpecID().toString();
+        }
+        String tagseen = "unknownTagSeenCount";
+        if (tr.getTagSeenCount() != null) {
+            tagseen = tr.getTagSeenCount().getTagCount().toString();
+        }
+        String output = " EPC: " + epcString
+                + "\nAntenna:" + antenna
+                + "\nChanIndex:" + index
+                + "\nSeenCnt:" + tagseen
+                + "\nFirstSeen:" + ftime
+                + "\nLastSeen:" + ltime
+                + "\nRSSI:" + rssi
+                + "\nROSpecID:" + roid
+                + "\nParamID:" + paramId;
+        System.out.println(output);
     }
 
     // This function gets called asynchronously
